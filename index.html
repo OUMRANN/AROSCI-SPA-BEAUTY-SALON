@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Arosci Spa &amp; Beauty Salon — The Spa · The Beauty Salon · The Cosmetics Shop</title>
+<meta name="description" content="Arosci Spa & Beauty Salon — a single luxury house holding the ritual of rest and the art of beauty. Morocco Bath, Steam & Sauna, Massage Therapy, full beauty artistry, and a curated cosmetics shop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 240'%3E%3Crect width='320' height='240' fill='%230A0A0A'/%3E%3Cpath d='M160,0 L146,20 L136,45 L146,72 L128,100 L142,128 L134,150 L146,172 L160,215 L174,172 L186,150 L178,128 L192,100 L174,72 L184,45 L174,20 Z' fill='%23D4AF37'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --obsidian:#0A0A0A;
+    --obsidian-soft:#121212;
+    --obsidian-panel: rgba(18,18,18,0.55);
+    --cream:#F5F0EB;
+    --cream-dim: rgba(245,240,235,0.68);
+    --cream-faint: rgba(245,240,235,0.38);
+    --gold:#D4AF37;
+    --gold-soft: rgba(212,175,55,0.4);
+    --gold-faint: rgba(212,175,55,0.16);
+    --serif: 'Cormorant Garamond', serif;
+    --sans: 'Jost', sans-serif;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--obsidian);
+    color:var(--cream);
+    font-family:var(--sans);
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--gold-soft); color:var(--obsidian); }
+
+  a{ color:inherit; text-decoration:none; }
+  h1,h2,h3{
+    font-family:var(--serif);
+    font-weight:500;
+    letter-spacing:.01em;
+    margin:0;
+    color:var(--cream);
+  }
+  p{ margin:0; }
+
+  /* ---------- Canvas background ---------- */
+  #scene-canvas{
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100vh;
+    z-index:0;
+    pointer-events:none;
+    display:block;
+  }
+  #fallback-glow{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(60% 50% at 50% 18%, rgba(212,175,55,0.10), transparent 70%),
+      radial-gradient(80% 60% at 50% 100%, rgba(212,175,55,0.06), transparent 70%);
+  }
+
+  /* ---------- Layout helpers ---------- */
+  .wrap{ position:relative; z-index:2; }
+  .container{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(20px,5vw,64px);
+  }
+  .eyebrow{
+    display:flex; align-items:center; gap:14px;
+    font-family:var(--sans);
+    font-size:12px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:34px; height:1px;
+    background:var(--gold);
+    display:inline-block;
+  }
+  .lede{
+    font-family:var(--sans);
+    font-weight:300;
+    font-size:clamp(15px,1.4vw,17px);
+    line-height:1.75;
+    color:var(--cream-dim);
+    max-width:52ch;
+  }
+
+  [data-reveal]{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity 1s var(--ease), transform 1s var(--ease);
+  }
+  [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
+  [data-reveal="fade"]{ transform:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    [data-reveal]{ opacity:1 !important; transform:none !important; transition:none !important; }
+    *{ animation:none !important; }
+  }
+
+  /* ---------- Lotus mark (SVG) ---------- */
+  .lotus-mark{ display:block; }
+  .lotus-mark path{ fill:var(--cream); }
+
+  /* ---------- Header / Nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    padding:20px 0;
+    transition:padding .5s var(--ease), background .5s var(--ease), backdrop-filter .5s var(--ease);
+  }
+  header.scrolled{
+    padding:12px 0;
+    background:rgba(10,10,10,0.72);
+    backdrop-filter:blur(16px) saturate(140%);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    border-bottom:1px solid rgba(212,175,55,0.12);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:1180px; margin:0 auto;
+    padding:0 clamp(20px,5vw,64px);
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+  }
+  .brand .lotus-mark{ width:30px; height:23px; flex-shrink:0; }
+  .brand-type{ display:flex; flex-direction:column; line-height:1.05; }
+  .brand-type .name{
+    font-family:var(--serif); font-size:20px; letter-spacing:.03em; color:var(--cream);
+  }
+  .brand-type .sub{
+    font-family:var(--sans); font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-top:3px;
+  }
+  nav.links{ display:flex; gap:40px; }
+  nav.links a{
+    font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--cream-dim);
+    position:relative; padding-bottom:4px;
+    transition:color .35s var(--ease);
+  }
+  nav.links a::after{
+    content:''; position:absolute; left:0; bottom:0; height:1px; width:0;
+    background:var(--gold); transition:width .4s var(--ease);
+  }
+  nav.links a:hover, nav.links a:focus-visible{ color:var(--cream); }
+  nav.links a:hover::after, nav.links a:focus-visible::after{ width:100%; }
+
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--obsidian); background:var(--gold);
+    padding:11px 22px; border-radius:999px;
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease);
+  }
+  .nav-cta:hover{ transform:translateY(-2px); box-shadow:0 10px 26px -8px rgba(212,175,55,0.55); }
+
+  .menu-toggle{
+    display:none; background:none; border:0; cursor:pointer; width:32px; height:22px;
+    position:relative; padding:0;
+  }
+  .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after{
+    content:''; position:absolute; left:0; right:0; height:1px; background:var(--cream); transition:transform .3s var(--ease), opacity .3s var(--ease);
+  }
+  .menu-toggle span{ top:50%; transform:translateY(-50%); }
+  .menu-toggle span::before{ top:-8px; }
+  .menu-toggle span::after{ top:8px; }
+  .menu-toggle.open span{ background:transparent; }
+  .menu-toggle.open span::before{ top:0; transform:rotate(45deg); }
+  .menu-toggle.open span::after{ top:0; transform:rotate(-45deg); }
+
+  .mobile-panel{
+    position:fixed; inset:0; z-index:45;
+    background:rgba(10,10,10,0.97);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:34px;
+    opacity:0; pointer-events:none;
+    transition:opacity .45s var(--ease);
+  }
+  .mobile-panel.open{ opacity:1; pointer-events:auto; }
+  .mobile-panel a{ font-family:var(--serif); font-size:28px; color:var(--cream); }
+  .mobile-panel a:hover{ color:var(--gold); }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--sans); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    padding:16px 30px; border-radius:999px; cursor:pointer;
+    transition:all .4s var(--ease);
+    white-space:nowrap;
+  }
+  .btn-gold{ background:var(--gold); color:var(--obsidian); }
+  .btn-gold:hover{ transform:translateY(-3px); box-shadow:0 14px 32px -10px rgba(212,175,55,0.5); }
+  .btn-ghost{ border:1px solid var(--gold-soft); color:var(--cream); }
+  .btn-ghost:hover{ border-color:var(--gold); background:var(--gold-faint); transform:translateY(-3px); }
+
+  .call-row{ display:flex; flex-wrap:wrap; gap:14px; margin-top:30px; }
+  .call-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:13px 22px; border-radius:999px;
+    border:1px solid var(--gold-soft);
+    font-size:14px; letter-spacing:.03em; color:var(--cream);
+    transition:all .4s var(--ease);
+  }
+  .call-btn svg{ width:14px; height:14px; flex-shrink:0; }
+  .call-btn:hover{ background:var(--gold); color:var(--obsidian); border-color:var(--gold); transform:translateY(-2px); }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding:140px 20px 80px;
+  }
+  .hero .eyebrow{ justify-content:center; }
+  .hero .eyebrow::before{ display:none; }
+  .hero h1{
+    font-size:clamp(44px, 8vw, 96px);
+    line-height:1.02;
+    letter-spacing:-.01em;
+  }
+  .hero h1 em{ font-style:italic; color:var(--gold); }
+  .hero .lede{ margin:26px auto 0; text-align:center; max-width:46ch; }
+  .hero-ctas{ display:flex; gap:16px; margin-top:44px; flex-wrap:wrap; justify-content:center; }
+  .scroll-cue{
+    position:absolute; bottom:38px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--cream-faint);
+  }
+  .scroll-cue .line{ width:1px; height:40px; background:linear-gradient(var(--gold), transparent); animation:cue 2.4s var(--ease) infinite; }
+  @keyframes cue{ 0%{opacity:.15; transform:scaleY(.4);} 50%{opacity:1; transform:scaleY(1);} 100%{opacity:.15; transform:scaleY(.4);} }
+
+  /* ---------- Section shell ---------- */
+  section{ position:relative; padding:150px 0; }
+  .section-head{ max-width:640px; margin-bottom:70px; }
+  .section-head h2{ font-size:clamp(34px,5vw,58px); margin-top:10px; }
+
+  .divider-mark{
+    display:flex; justify-content:center; margin:0 auto;
+    opacity:.85;
+  }
+  .divider-mark .lotus-mark{ width:46px; height:35px; }
+
+  /* ---------- Panel (glass, borderless) ---------- */
+  .panel{
+    background:var(--obsidian-panel);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    border-radius:6px;
+    padding:clamp(28px,4vw,52px);
+  }
+
+  /* ---------- Spa services ---------- */
+  .service-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--gold-faint);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .service-card{
+    background:var(--obsidian-soft);
+    padding:44px 34px;
+    display:flex; flex-direction:column; gap:18px;
+    transition:background .5s var(--ease);
+  }
+  .service-card:hover{ background:#171713; }
+  .service-num{ font-family:var(--serif); font-style:italic; font-size:14px; color:var(--gold); }
+  .service-card h3{ font-size:26px; }
+  .service-card p{ font-size:14px; line-height:1.7; color:var(--cream-dim); font-weight:300; }
+
+  /* ---------- Beauty list ---------- */
+  .beauty-layout{ display:grid; grid-template-columns:1.05fr 1fr; gap:70px; align-items:start; }
+  .service-list{ list-style:none; margin:0; padding:0; }
+  .service-list li{
+    display:flex; align-items:baseline; justify-content:space-between; gap:20px;
+    padding:20px 0;
+    border-bottom:1px solid rgba(212,175,55,0.14);
+    font-family:var(--serif); font-size:clamp(20px,2.4vw,26px);
+    transition:padding-left .35s var(--ease), color .35s var(--ease);
+  }
+  .service-list li:first-child{ padding-top:0; }
+  .service-list li span.i{
+    font-family:var(--sans); font-size:11px; letter-spacing:.14em; color:var(--gold-soft); flex-shrink:0;
+  }
+  .service-list li:hover{ padding-left:10px; color:var(--gold); }
+
+  /* ---------- Cosmetics ---------- */
+  .cosmetics-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--gold-faint); border-radius:6px; overflow:hidden;
+  }
+  .cos-card{
+    background:var(--obsidian-soft); padding:38px 26px; min-height:210px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition:background .5s var(--ease), transform .5s var(--ease);
+  }
+  .cos-card:hover{ background:#171713; transform:translateY(-6px); }
+  .cos-card .mark{ opacity:.55; }
+  .cos-card h3{ font-size:21px; margin-top:20px; }
+  .cos-card p{ font-size:12.5px; color:var(--cream-dim); line-height:1.6; margin-top:8px; }
+
+  /* ---------- Contact ---------- */
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--gold-faint); border-radius:6px; overflow:hidden; }
+  .contact-card{ background:var(--obsidian-soft); padding:clamp(34px,4vw,52px); }
+  .contact-card h3{ font-size:28px; margin-bottom:6px; }
+  .contact-card .tag{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
+  .contact-card .call-row{ margin-top:26px; flex-direction:column; align-items:flex-start; }
+  .contact-card .call-btn{ width:100%; justify-content:space-between; }
+
+  /* ---------- Footer ---------- */
+  footer{ position:relative; padding:80px 0 40px; border-top:1px solid rgba(212,175,55,0.12); }
+  .footer-top{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:40px; margin-bottom:56px; }
+  .footer-brand{ display:flex; align-items:center; gap:14px; }
+  .footer-brand .lotus-mark{ width:34px; height:26px; }
+  .footer-brand .name{ font-family:var(--serif); font-size:24px; }
+  .footer-nav{ display:flex; gap:34px; flex-wrap:wrap; }
+  .footer-nav a{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--cream-dim); }
+  .footer-nav a:hover{ color:var(--gold); }
+  .footer-bottom{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px;
+    font-size:11px; color:var(--cream-faint); letter-spacing:.04em;
+    padding-top:26px; border-top:1px solid rgba(212,175,55,0.08);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:980px){
+    nav.links{ display:none; }
+    .nav-cta{ display:none; }
+    .menu-toggle{ display:block; }
+    .beauty-layout{ grid-template-columns:1fr; gap:44px; }
+    .service-grid{ grid-template-columns:1fr; }
+    .cosmetics-grid{ grid-template-columns:repeat(2,1fr); }
+    .contact-grid{ grid-template-columns:1fr; }
+  }
+  @media (max-width:560px){
+    section{ padding:110px 0; }
+    .cosmetics-grid{ grid-template-columns:1fr; }
+    .hero-ctas{ flex-direction:column; width:100%; }
+    .hero-ctas .btn{ justify-content:center; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="scene-canvas" aria-hidden="true"></canvas>
+<div id="fallback-glow" aria-hidden="true"></div>
+
+<!-- ============ HEADER ============ -->
+<header id="siteHeader">
+  <div class="nav-inner">
+    <a href="#home" class="brand" aria-label="Arosci Spa & Beauty Salon — home">
+      <svg class="lotus-mark" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <path d="M160,150 L92,118 L48,70 L92,84 L136,74 L160,150 Z"/>
+          <path d="M160,150 L118,96 L98,40 L128,66 L152,78 L160,150 Z"/>
+          <path d="M160,10 L146,32 L134,55 L146,80 L130,106 L143,132 L136,153 L147,174 L160,222 L173,174 L184,153 L177,132 L190,106 L174,80 L186,55 L174,32 Z"/>
+          <path d="M160,150 L202,96 L222,40 L192,66 L168,78 L160,150 Z"/>
+          <path d="M160,150 L228,118 L272,70 L228,84 L184,74 L160,150 Z"/>
+        </g>
+      </svg>
+      <span class="brand-type">
+        <span class="name">Arosci</span>
+        <span class="sub">Spa &amp; Beauty Salon</span>
+      </span>
+    </a>
+
+    <nav class="links" aria-label="Primary">
+      <a href="#home">Home</a>
+      <a href="#spa">The Spa</a>
+      <a href="#salon">The Beauty Salon</a>
+      <a href="#shop">Cosmetics Shop</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <a href="#contact" class="nav-cta">Reserve a Visit</a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <a href="#home">Home</a>
+  <a href="#spa">The Spa</a>
+  <a href="#salon">The Beauty Salon</a>
+  <a href="#shop">Cosmetics Shop</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<main class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="eyebrow">A Sanctuary in Two Halves</div>
+    <h1 data-reveal="fade">Arosci Spa<br>&amp; <em>Beauty Salon</em></h1>
+    <p class="lede" data-reveal="fade">Where the ritual of rest and the art of beauty are held under a single roof — one house, two disciplines, a single standard of care.</p>
+    <div class="hero-ctas" data-reveal="fade">
+      <a href="#spa" class="btn btn-gold">Enter the Spa</a>
+      <a href="#salon" class="btn btn-ghost">Enter the Salon</a>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+  </section>
+
+  <!-- ============ THE SPA ============ -->
+  <section id="spa">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div class="eyebrow">The Spa</div>
+        <h2>Ritual &amp; Restoration</h2>
+        <p class="lede" style="margin-top:20px;">Heat, steam and touch, sequenced with intention. Every visit to the spa is built around the body's own rhythm of tension and release.</p>
+      </div>
+
+      <div class="service-grid" data-reveal>
+        <div class="service-card">
+          <span class="service-num">I.</span>
+          <h3>Morocco Bath</h3>
+          <p>A traditional hammam ritual of steam, exfoliation and black soap, leaving skin softened and the mind unhurried.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-num">II.</span>
+          <h3>Steam &amp; Sauna Bath</h3>
+          <p>Dry heat and rising steam, used in sequence to open the senses, ease the muscles and draw out the day's tension.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-num">III.</span>
+          <h3>Massage Therapy</h3>
+          <p>Hands-on bodywork tailored to what the body is carrying — from deep, restorative pressure to gentler, unwinding strokes.</p>
+        </div>
+      </div>
+
+      <div data-reveal>
+        <p class="lede" style="margin-top:44px; font-size:13px; letter-spacing:.05em; color:var(--gold);">Reserve your ritual — call the spa directly</p>
+        <div class="call-row">
+          <a class="call-btn" href="tel:0978383010">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            097 838 3010
+          </a>
+          <a class="call-btn" href="tel:0113207303">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            011 320 7303
+          </a>
+          <a class="call-btn" href="tel:0910679205">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            091 067 9205
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-mark" data-reveal="fade">
+    <svg class="lotus-mark" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <path d="M160,150 L92,118 L48,70 L92,84 L136,74 L160,150 Z"/>
+        <path d="M160,150 L118,96 L98,40 L128,66 L152,78 L160,150 Z"/>
+        <path d="M160,10 L146,32 L134,55 L146,80 L130,106 L143,132 L136,153 L147,174 L160,222 L173,174 L184,153 L177,132 L190,106 L174,80 L186,55 L174,32 Z"/>
+        <path d="M160,150 L202,96 L222,40 L192,66 L168,78 L160,150 Z"/>
+        <path d="M160,150 L228,118 L272,70 L228,84 L184,74 L160,150 Z"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ============ THE BEAUTY SALON ============ -->
+  <section id="salon">
+    <div class="container">
+      <div class="beauty-layout">
+        <div data-reveal>
+          <div class="section-head" style="margin-bottom:36px;">
+            <div class="eyebrow">The Beauty Salon</div>
+            <h2>Artistry, Perfected</h2>
+            <p class="lede" style="margin-top:20px;">Full-service styling for face, hair, hands and skin — every treatment carried out with the same unhurried precision as the spa next door.</p>
+          </div>
+          <p class="lede" style="font-size:13px; letter-spacing:.05em; color:var(--gold);">Reserve your appointment — call the salon directly</p>
+          <div class="call-row">
+            <a class="call-btn" href="tel:0978383010">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+              097 838 3010
+            </a>
+            <a class="call-btn" href="tel:0113209090">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+              011 320 9090
+            </a>
+            <a class="call-btn" href="tel:0911625189">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+              091 162 5189
+            </a>
+          </div>
+        </div>
+
+        <div data-reveal>
+          <ul class="service-list">
+            <li><span>Makeup Artistry</span><span class="i">01</span></li>
+            <li><span>Relaxers</span><span class="i">02</span></li>
+            <li><span>Nail Care &amp; Styling</span><span class="i">03</span></li>
+            <li><span>Eyebrow Styling</span><span class="i">04</span></li>
+            <li><span>Pedicure &amp; Manicure</span><span class="i">05</span></li>
+            <li><span>Hair Coloring</span><span class="i">06</span></li>
+            <li><span>Hair Twisting &amp; Braiding</span><span class="i">07</span></li>
+            <li><span>Waxing Services</span><span class="i">08</span></li>
+            <li><span>Deep Hair Treatments</span><span class="i">09</span></li>
+            <li><span>Full Weaving &amp; Pestra</span><span class="i">10</span></li>
+            <li><span>Wigs Styling &amp; Maintenance</span><span class="i">11</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COSMETICS SHOP ============ -->
+  <section id="shop">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div class="eyebrow">The Cosmetics Shop</div>
+        <h2>Curated for the House</h2>
+        <p class="lede" style="margin-top:20px;">A small retail edit, chosen with the same eye we bring to every treatment — for the days between your visits.</p>
+      </div>
+
+      <div class="cosmetics-grid" data-reveal>
+        <div class="cos-card">
+          <div>
+            <svg class="lotus-mark mark" width="26" height="20" viewBox="0 0 320 240"><path d="M160,10 L146,32 L134,55 L146,80 L130,106 L143,132 L136,153 L147,174 L160,222 L173,174 L184,153 L177,132 L190,106 L174,80 L186,55 L174,32 Z"/></svg>
+            <h3>Human Hair</h3>
+          </div>
+          <p>Ethically sourced human hair collections for wigs, weaving and extension work.</p>
+        </div>
+        <div class="cos-card">
+          <div>
+            <svg class="lotus-mark mark" width="26" height="20" viewBox="0 0 320 240"><path d="M160,10 L146,32 L134,55 L146,80 L130,106 L143,132 L136,153 L147,174 L160,222 L173,174 L184,153 L177,132 L190,106 L174,80 L186,55 L174,32 Z"/></svg>
+            <h3>Premium Perfumes</h3>
+          </div>
+          <p>A considered fragrance shelf, from everyday signatures to rarer, richer pours.</p>
+        </div>
+        <div class="cos-card">
+          <div>
+            <svg class="lotus-mark mark" width="26" height="20" viewBox="0 0 320 240"><path d="M160,10 L146,32 L134,55 L146,80 L130,106 L143,132 L136,153 L147,174 L160,222 L173,174 L184,153 L177,132 L190,106 L174,80 L186,55 L174,32 Z"/></svg>
+            <h3>Luxury Skincare</h3>
+          </div>
+          <p>Serums, creams and treatment oils selected to support what happens in our chairs.</p>
+        </div>
+        <div class="cos-card">
+          <div>
+            <svg class="lotus-mark mark" width="26" height="20" viewBox="0 0 320 240"><path d="M160,10 L146,32 L134,55 L146,80 L130,106 L143,132 L136,153 L147,174 L160,222 L173,174 L184,153 L177,132 L190,106 L174,80 L186,55 L174,32 Z"/></svg>
+            <h3>&amp; More</h3>
+          </div>
+          <p>The edit rotates — ask in-house for what's newly arrived on the shelf.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div class="eyebrow">Reserve a Visit</div>
+        <h2>Two Houses, One Standard</h2>
+        <p class="lede" style="margin-top:20px;">Every reservation is made by phone — speak directly with the team for the service you have in mind.</p>
+      </div>
+
+      <div class="contact-grid" data-reveal>
+        <div class="contact-card">
+          <div class="tag">The Spa</div>
+          <h3>Morocco Bath · Steam &amp; Sauna · Massage</h3>
+          <div class="call-row">
+            <a class="call-btn" href="tel:0978383010"><span>097 838 3010</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            </a>
+            <a class="call-btn" href="tel:0113207303"><span>011 320 7303</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            </a>
+            <a class="call-btn" href="tel:0910679205"><span>091 067 9205</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="tag">The Beauty Salon &amp; Cosmetics Shop</div>
+          <h3>Styling, Treatments &amp; Retail</h3>
+          <div class="call-row">
+            <a class="call-btn" href="tel:0978383010"><span>097 838 3010</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            </a>
+            <a class="call-btn" href="tel:0113209090"><span>011 320 9090</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            </a>
+            <a class="call-btn" href="tel:0911625189"><span>091 162 5189</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.6 21 3 14.4 3 6a2 2 0 0 1 1-2z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="wrap">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg class="lotus-mark" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <path d="M160,150 L92,118 L48,70 L92,84 L136,74 L160,150 Z"/>
+            <path d="M160,150 L118,96 L98,40 L128,66 L152,78 L160,150 Z"/>
+            <path d="M160,10 L146,32 L134,55 L146,80 L130,106 L143,132 L136,153 L147,174 L160,222 L173,174 L184,153 L177,132 L190,106 L174,80 L186,55 L174,32 Z"/>
+            <path d="M160,150 L202,96 L222,40 L192,66 L168,78 L160,150 Z"/>
+            <path d="M160,150 L228,118 L272,70 L228,84 L184,74 L160,150 Z"/>
+          </g>
+        </svg>
+        <span class="name">Arosci Spa &amp; Beauty Salon</span>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="#home">Home</a>
+        <a href="#spa">The Spa</a>
+        <a href="#salon">The Beauty Salon</a>
+        <a href="#shop">Cosmetics Shop</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Arosci Spa &amp; Beauty Salon. All rights reserved.</span>
+      <span>Spa 097 838 3010 · Salon 097 838 3010</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- Nav interactions ---------------- */
+  var header = document.getElementById('siteHeader');
+  var onScroll = function(){
+    if(window.scrollY > 40){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  };
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  var menuToggle = document.getElementById('menuToggle');
+  var mobilePanel = document.getElementById('mobilePanel');
+  menuToggle.addEventListener('click', function(){
+    var open = mobilePanel.classList.toggle('open');
+    menuToggle.classList.toggle('open', open);
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobilePanel.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      mobilePanel.classList.remove('open');
+      menuToggle.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ---------------- Scroll reveal ---------------- */
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15, rootMargin:'0px 0px -8% 0px'});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  /* ---------------- Three.js cinematic scene ---------------- */
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canvas = document.getElementById('scene-canvas');
+  var hasWebGL = (function(){
+    try{
+      var c = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+    }catch(e){ return false; }
+  })();
+
+  if(!hasWebGL || typeof THREE === 'undefined'){
+    canvas.style.display = 'none';
+    return;
+  }
+
+  var isMobile = window.innerWidth < 760;
+
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true, powerPreference:'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0);
+
+  var scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x0A0A0A, 0.028);
+
+  var camera = new THREE.PerspectiveCamera(42, window.innerWidth/window.innerHeight, 0.1, 200);
+  camera.position.set(0, 0.4, 11);
+
+  /* Lights */
+  scene.add(new THREE.AmbientLight(0x4a4038, 1.1));
+  var keyLight = new THREE.PointLight(0xD4AF37, 3.2, 60, 2);
+  keyLight.position.set(6, 6, 8);
+  scene.add(keyLight);
+  var rimLight = new THREE.PointLight(0xF5F0EB, 1.6, 60, 2);
+  rimLight.position.set(-8, -3, -6);
+  scene.add(rimLight);
+  var fillLight = new THREE.DirectionalLight(0xffffff, 0.35);
+  fillLight.position.set(0, 5, 4);
+  scene.add(fillLight);
+
+  /* -------- Lotus petal geometry builder -------- */
+  function buildPetalShape(points, scale){
+    var shape = new THREE.Shape();
+    points.forEach(function(p, i){
+      var x = p[0]*scale, y = -p[1]*scale;
+      if(i===0){ shape.moveTo(x,y); } else { shape.lineTo(x,y); }
+    });
+    shape.closePath();
+    return shape;
+  }
+
+  var facePetalPts = [
+    [45,0],[30,25],[18,48],[30,78],[12,108],[28,135],[20,158],[33,182],[45,222],
+    [66,178],[82,130],[90,85],[78,45],[45,0]
+  ];
+  var sidePetalPts = [
+    [0,0],[-14,20],[-24,55],[-26,95],[-16,130],[0,150],
+    [16,130],[26,95],[24,55],[14,20],[0,0]
+  ];
+
+  var petalMat = new THREE.MeshStandardMaterial({
+    color: 0xF5F0EB, metalness:0.28, roughness:0.32,
+    emissive: 0x2a2110, emissiveIntensity:0.18
+  });
+  var extrudeSettings = { depth:0.22, bevelEnabled:true, bevelThickness:0.035, bevelSize:0.035, bevelSegments:3, curveSegments:1 };
+
+  var lotus = new THREE.Group();
+
+  function makePetal(points, scale, rotationZ, extraDepth, offsetY){
+    var shape = buildPetalShape(points, scale);
+    var settings = Object.assign({}, extrudeSettings, { depth: extrudeSettings.depth * extraDepth });
+    var geo = new THREE.ExtrudeGeometry(shape, settings);
+    geo.center();
+    var mesh = new THREE.Mesh(geo, petalMat);
+    var pivot = new THREE.Group();
+    pivot.add(mesh);
+    mesh.position.y = -(points[points.length-2] ? 0 : 0); // no-op, geometry already centered
+    pivot.rotation.z = rotationZ;
+    pivot.position.y = offsetY;
+    return pivot;
+  }
+
+  var s = 0.017;
+  lotus.add(makePetal(sidePetalPts, s*1.05,  1.18, 1.0, -0.15)); // outer left
+  lotus.add(makePetal(sidePetalPts, s*0.92,  0.46, 1.0, -0.05)); // inner left
+  lotus.add(makePetal(facePetalPts, s*1.0,   0.0,  1.15, 0.15)); // center / face
+  lotus.add(makePetal(sidePetalPts, s*0.92, -0.46, 1.0, -0.05)); // inner right
+  lotus.add(makePetal(sidePetalPts, s*1.05, -1.18, 1.0, -0.15)); // outer right
+
+  lotus.rotation.x = 0.12;
+  lotus.position.y = 0.2;
+  scene.add(lotus);
+
+  /* -------- Particle field (gold dust) -------- */
+  var PARTICLE_COUNT = isMobile ? 260 : 700;
+  var positions = new Float32Array(PARTICLE_COUNT*3);
+  var speeds = new Float32Array(PARTICLE_COUNT);
+  for(var i=0;i<PARTICLE_COUNT;i++){
+    positions[i*3+0] = (Math.random()-0.5)*30;
+    positions[i*3+1] = (Math.random()-0.5)*20;
+    positions[i*3+2] = (Math.random())*-70 + 10;
+    speeds[i] = 0.15 + Math.random()*0.35;
+  }
+  var particleGeo = new THREE.BufferGeometry();
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  var particleCanvas = document.createElement('canvas');
+  particleCanvas.width = 64; particleCanvas.height = 64;
+  var pctx = particleCanvas.getContext('2d');
+  var grad = pctx.createRadialGradient(32,32,0,32,32,32);
+  grad.addColorStop(0, 'rgba(212,175,55,1)');
+  grad.addColorStop(0.4, 'rgba(212,175,55,0.55)');
+  grad.addColorStop(1, 'rgba(212,175,55,0)');
+  pctx.fillStyle = grad;
+  pctx.fillRect(0,0,64,64);
+  var particleTex = new THREE.CanvasTexture(particleCanvas);
+
+  var particleMat = new THREE.PointsMaterial({
+    size: isMobile ? 0.16 : 0.14,
+    map: particleTex,
+    transparent:true,
+    opacity:0.55,
+    depthWrite:false,
+    blending:THREE.AdditiveBlending,
+    sizeAttenuation:true
+  });
+  var particles = new THREE.Points(particleGeo, particleMat);
+  scene.add(particles);
+
+  /* -------- Scroll-driven camera dolly -------- */
+  var docHeight = 1, scrollFrac = 0, targetScrollFrac = 0;
+  function computeDocHeight(){
+    docHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+  }
+  computeDocHeight();
+
+  var mouseX = 0, mouseY = 0, targetMouseX = 0, targetMouseY = 0;
+  window.addEventListener('mousemove', function(e){
+    targetMouseX = (e.clientX / window.innerWidth - 0.5);
+    targetMouseY = (e.clientY / window.innerHeight - 0.5);
+  }, {passive:true});
+
+  window.addEventListener('scroll', function(){
+    targetScrollFrac = window.scrollY / docHeight;
+  }, {passive:true});
+
+  window.addEventListener('resize', function(){
+    computeDocHeight();
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    isMobile = window.innerWidth < 760;
+  });
+
+  var visible = true;
+  document.addEventListener('visibilitychange', function(){
+    visible = document.visibilityState === 'visible';
+  });
+
+  var clock = new THREE.Clock();
+  var camStartZ = 11, camEndZ = -46;
+
+  function animate(){
+    requestAnimationFrame(animate);
+    if(!visible) return;
+
+    var dt = Math.min(clock.getDelta(), 0.05);
+    var t = clock.elapsedTime;
+
+    scrollFrac += (targetScrollFrac - scrollFrac) * 0.06;
+    mouseX += (targetMouseX - mouseX) * 0.04;
+    mouseY += (targetMouseY - mouseY) * 0.04;
+
+    camera.position.z = camStartZ + (camEndZ - camStartZ) * Math.min(scrollFrac*1.35, 1);
+    camera.position.y = 0.4 + Math.sin(scrollFrac * Math.PI) * 0.6 - mouseY*0.6;
+    camera.position.x = mouseX * 1.1;
+    camera.lookAt(0, 0.15, camera.position.z - 8);
+
+    if(!prefersReduced){
+      lotus.rotation.y = t * 0.18 + scrollFrac * 2.2;
+      lotus.rotation.x = 0.12 + Math.sin(t*0.3)*0.03;
+      lotus.position.z = -scrollFrac * 4;
+      var op = 1 - Math.min(scrollFrac*2.4, 1);
+      petalMat.emissiveIntensity = 0.12 + Math.max(op,0.15)*0.14;
+      lotus.visible = op > 0.02;
+
+      var pos = particleGeo.attributes.position.array;
+      for(var j=0;j<PARTICLE_COUNT;j++){
+        pos[j*3+1] += speeds[j]*dt*0.4;
+        pos[j*3+2] += dt*1.4;
+        if(pos[j*3+1] > 12) pos[j*3+1] = -12;
+        if(pos[j*3+2] > camera.position.z + 12){
+          pos[j*3+2] = camera.position.z - 60;
+          pos[j*3+0] = (Math.random()-0.5)*30;
+          pos[j*3+1] = (Math.random()-0.5)*20;
+        }
+      }
+      particleGeo.attributes.position.needsUpdate = true;
+      particles.rotation.y = t * 0.01;
+    }
+
+    keyLight.intensity = 3.0 + Math.sin(t*0.6)*0.3;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('load', computeDocHeight);
+  setTimeout(computeDocHeight, 600);
+})();
+</script>
+</body>
+</html>
