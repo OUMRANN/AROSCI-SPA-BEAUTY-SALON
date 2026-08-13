@@ -142,7 +142,7 @@
   .brand-type .sub{
     font-family:var(--sans); font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-top:3px;
   }
-  nav.links{ display:flex; gap:40px; }
+  nav.links{ display:flex; gap:34px; }
   nav.links a{
     font-size:12px; letter-spacing:.16em; text-transform:uppercase;
     color:var(--cream-dim);
@@ -182,12 +182,12 @@
   .mobile-panel{
     position:fixed; inset:0; z-index:45;
     background:rgba(10,10,10,0.97);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:34px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:30px;
     opacity:0; pointer-events:none;
     transition:opacity .45s var(--ease);
   }
   .mobile-panel.open{ opacity:1; pointer-events:auto; }
-  .mobile-panel a{ font-family:var(--serif); font-size:28px; color:var(--cream); }
+  .mobile-panel a{ font-family:var(--serif); font-size:26px; color:var(--cream); }
   .mobile-panel a:hover{ color:var(--gold); }
 
   /* ---------- Buttons ---------- */
@@ -311,6 +311,109 @@
   .cos-card h3{ font-size:21px; margin-top:20px; }
   .cos-card p{ font-size:12.5px; color:var(--cream-dim); line-height:1.6; margin-top:8px; }
 
+  /* ---------- Testimonials / Reviews ---------- */
+  #reviews{ padding-bottom:130px; }
+  .reviews-summary{
+    display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+    margin-top:26px;
+  }
+  .reviews-summary .score{
+    font-family:var(--serif); font-size:44px; color:var(--gold); line-height:1;
+  }
+  .reviews-summary .score-meta{
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .reviews-summary .stars{ display:flex; gap:3px; }
+  .reviews-summary .stars svg{ width:13px; height:13px; }
+  .reviews-summary .score-sub{
+    font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--cream-faint);
+  }
+
+  .reviews-rail-wrap{
+    position:relative;
+    margin-top:64px;
+  }
+  .reviews-rail-wrap::before,
+  .reviews-rail-wrap::after{
+    content:''; position:absolute; top:0; bottom:0; width:min(9vw,110px); z-index:3; pointer-events:none;
+  }
+  .reviews-rail-wrap::before{ left:0; background:linear-gradient(90deg, var(--obsidian), transparent); }
+  .reviews-rail-wrap::after{ right:0; background:linear-gradient(270deg, var(--obsidian), transparent); }
+
+  .reviews-track{
+    display:flex;
+    gap:22px;
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+    padding:10px clamp(20px,5vw,64px) 30px;
+    -ms-overflow-style:none;
+    scrollbar-width:none;
+  }
+  .reviews-track::-webkit-scrollbar{ display:none; }
+  .reviews-track.row-b{ margin-top:-6px; }
+  .reviews-track.row-b .review-card{ margin-top:34px; }
+
+  .review-card{
+    flex:0 0 auto;
+    width:min(78vw, 360px);
+    scroll-snap-align:start;
+    background:linear-gradient(160deg, rgba(212,175,55,0.05), rgba(18,18,18,0.02));
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    border-radius:2px;
+    padding:32px 30px 28px;
+    position:relative;
+    box-shadow:0 0 0 1px rgba(212,175,55,0.05) inset, 0 20px 50px -30px rgba(0,0,0,0.7);
+    transition:transform .55s var(--ease), box-shadow .55s var(--ease), background .55s var(--ease);
+  }
+  .review-card:hover{
+    transform:translateY(-8px);
+    background:linear-gradient(160deg, rgba(212,175,55,0.1), rgba(18,18,18,0.04));
+    box-shadow:0 0 0 1px rgba(212,175,55,0.16) inset, 0 30px 60px -28px rgba(212,175,55,0.18);
+  }
+
+  .review-top{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px;
+  }
+  .review-person{ display:flex; align-items:center; gap:12px; }
+  .review-avatar{
+    width:40px; height:40px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(150deg, rgba(212,175,55,0.35), rgba(212,175,55,0.06));
+    font-family:var(--serif); font-size:15px; color:var(--gold);
+  }
+  .review-id{ display:flex; flex-direction:column; gap:3px; }
+  .review-name-row{ display:flex; align-items:center; gap:6px; }
+  .review-name{ font-family:var(--serif); font-size:16.5px; color:var(--cream); }
+  .review-verified{ width:13px; height:13px; color:var(--gold); flex-shrink:0; }
+  .review-loc{ font-size:11px; letter-spacing:.05em; color:var(--cream-faint); }
+  .review-stamp{ font-size:10.5px; color:var(--cream-faint); letter-spacing:.04em; white-space:nowrap; }
+
+  .review-tag{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--gold); background:var(--gold-faint);
+    padding:6px 12px; border-radius:999px; margin-bottom:16px;
+  }
+  .review-tag::before{
+    content:''; width:5px; height:5px; border-radius:50%; background:var(--gold);
+    box-shadow:0 0 8px 1px rgba(212,175,55,0.7);
+  }
+
+  .review-stars{ display:flex; gap:3px; margin-bottom:14px; }
+  .review-stars svg{ width:13px; height:13px; }
+
+  .review-quote{
+    font-family:var(--serif); font-style:italic; font-size:16.5px; line-height:1.65;
+    color:var(--cream-dim);
+  }
+
+  .reviews-cta{
+    margin-top:52px; display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+    padding:0 clamp(20px,5vw,64px);
+  }
+  .reviews-cta p{ font-size:12.5px; letter-spacing:.04em; color:var(--cream-faint); }
+
   /* ---------- Contact ---------- */
   .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--gold-faint); border-radius:6px; overflow:hidden; }
   .contact-card{ background:var(--obsidian-soft); padding:clamp(34px,4vw,52px); }
@@ -325,7 +428,7 @@
   .footer-brand{ display:flex; align-items:center; gap:14px; }
   .footer-brand .lotus-mark{ width:34px; height:26px; }
   .footer-brand .name{ font-family:var(--serif); font-size:24px; }
-  .footer-nav{ display:flex; gap:34px; flex-wrap:wrap; }
+  .footer-nav{ display:flex; gap:30px; flex-wrap:wrap; }
   .footer-nav a{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--cream-dim); }
   .footer-nav a:hover{ color:var(--gold); }
   .footer-bottom{
@@ -346,9 +449,13 @@
   }
   @media (max-width:560px){
     section{ padding:110px 0; }
+    #reviews{ padding-bottom:100px; }
     .cosmetics-grid{ grid-template-columns:1fr; }
     .hero-ctas{ flex-direction:column; width:100%; }
     .hero-ctas .btn{ justify-content:center; }
+    .review-card{ width:82vw; padding:26px 22px 24px; }
+    .reviews-track.row-b .review-card{ margin-top:0; }
+    .reviews-track.row-b{ margin-top:16px; }
   }
 </style>
 </head>
@@ -381,6 +488,7 @@
       <a href="#spa">The Spa</a>
       <a href="#salon">The Beauty Salon</a>
       <a href="#shop">Cosmetics Shop</a>
+      <a href="#reviews">Reviews</a>
       <a href="#contact">Contact</a>
     </nav>
 
@@ -395,6 +503,7 @@
   <a href="#spa">The Spa</a>
   <a href="#salon">The Beauty Salon</a>
   <a href="#shop">Cosmetics Shop</a>
+  <a href="#reviews">Reviews</a>
   <a href="#contact">Contact</a>
 </div>
 
@@ -559,6 +668,298 @@
     </div>
   </section>
 
+  <!-- ============ TESTIMONIALS / REVIEWS ============ -->
+  <section id="reviews">
+    <div class="container">
+      <div class="section-head" data-reveal style="margin-bottom:0;">
+        <div class="eyebrow">Client Voices</div>
+        <h2>Trusted, Near &amp; Far</h2>
+        <p class="lede" style="margin-top:20px;">A house judged by the people who return to it — a running record of visits, from the neighborhood to the diaspora abroad.</p>
+
+        <div class="reviews-summary">
+          <div class="score">4.9</div>
+          <div class="score-meta">
+            <div class="stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <div class="score-sub">Based on 200+ verified visits</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reviews-rail-wrap" data-reveal>
+        <!-- Row A -->
+        <div class="reviews-track row-a">
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">ST</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Selamawit T.</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Addis Ababa, Ethiopia</span>
+                </div>
+              </div>
+              <span class="review-stamp">3 hours ago</span>
+            </div>
+            <span class="review-tag">Verified VIP Client</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">The Morocco bath ritual is unlike anything else in the city. Every step was unhurried, the black soap exfoliation left my skin genuinely transformed. This is the only house I trust now.</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">JW</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">James Whitfield</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">London, United Kingdom</span>
+                </div>
+              </div>
+              <span class="review-stamp">Yesterday</span>
+            </div>
+            <span class="review-tag">Global Express Buyer</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">Booked a full sauna and massage package while visiting Addis for work. The team accommodated a same-day appointment without ever making it feel rushed. Genuinely five-star hospitality.</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">DB</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Dawit Bekele</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Addis Ababa, Ethiopia</span>
+                </div>
+              </div>
+              <span class="review-stamp">4 days ago</span>
+            </div>
+            <span class="review-tag">Direct Custom Order</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">I asked for a custom wig install ahead of a wedding and they walked me through the entire human hair selection personally. Precise, patient, and the finish looked completely natural.</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">AO</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Amara Osei</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Accra, Ghana</span>
+                </div>
+              </div>
+              <span class="review-stamp">5 days ago</span>
+            </div>
+            <span class="review-tag">Verified VIP Client</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">I fly in from Accra twice a year and Arosci is always the first stop. The eyebrow styling and deep hair treatment together left me ready for anything — I book the same technician every time.</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">SL</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Sophie Laurent</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Paris, France</span>
+                </div>
+              </div>
+              <span class="review-stamp">1 week ago</span>
+            </div>
+            <span class="review-tag">Global Express Buyer</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">I did not expect a spa in Addis to match what I know from Paris, but the steam and sauna sequence here is genuinely world-class. Quiet, precise, and the space itself is beautiful.</p>
+          </article>
+
+        </div>
+
+        <!-- Row B (staggered) -->
+        <div class="reviews-track row-b">
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">HG</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Hana Girma</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Addis Ababa, Ethiopia</span>
+                </div>
+              </div>
+              <span class="review-stamp">1 week ago</span>
+            </div>
+            <span class="review-tag">Verified Client</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">The nail and pedicure staff take genuine time with detail work — I've never had a set last this clean this long. Booking again for my sister's introduction ceremony.</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">MF</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Marta Fernández</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Madrid, Spain</span>
+                </div>
+              </div>
+              <span class="review-stamp">2 days ago</span>
+            </div>
+            <span class="review-tag">Verified Client</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">Found Arosci while relocating for work and it became my monthly reset. The massage therapists genuinely listen to what your body needs rather than running a fixed script.</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">YT</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Yonas Tesfaye</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Addis Ababa, Ethiopia</span>
+                </div>
+              </div>
+              <span class="review-stamp">2 weeks ago</span>
+            </div>
+            <span class="review-tag">Verified Client</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">Brought my mother in for her birthday — the makeup artistry team made her feel completely at ease and the result was elegant, not overdone. We will be regulars now.</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">AR</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Aisha Al-Rashid</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Dubai, UAE</span>
+                </div>
+              </div>
+              <span class="review-stamp">2 weeks ago</span>
+            </div>
+            <span class="review-tag">Verified VIP Client</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">I compare every spa I visit to my regular house back home, and Arosci held its own effortlessly. The hammam attendants were skilled, warm, and unhurried from start to finish.</p>
+          </article>
+
+          <article class="review-card">
+            <div class="review-top">
+              <div class="review-person">
+                <div class="review-avatar">RA</div>
+                <div class="review-id">
+                  <div class="review-name-row">
+                    <span class="review-name">Robel Alemu</span>
+                    <svg class="review-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.6 1 3 2.9 1.3-.6 3.2L22 14l-1.2 2.9.6 3.2-2.9 1.3-1 3-3.1-.6L12 26l-2.4-2.1-3.1.6-1-3-2.9-1.3.6-3.2L2 14l1.2-2.9-.6-3.2 2.9-1.3 1-3 3.1.6z" transform="translate(0,-2)"/><path d="M9 12l2 2 4-4" stroke="#0A0A0A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <span class="review-loc">Addis Ababa, Ethiopia</span>
+                </div>
+              </div>
+              <span class="review-stamp">3 weeks ago</span>
+            </div>
+            <span class="review-tag">Direct Custom Order</span>
+            <div class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+              <svg viewBox="0 0 20 20" fill="#D4AF37"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+            </div>
+            <p class="review-quote">Ordered a specific perfume from the cosmetics shop that I hadn't been able to find anywhere else in the city. They sourced it within the week and the packaging alone felt premium.</p>
+          </article>
+
+        </div>
+      </div>
+
+      <div class="reviews-cta" data-reveal="fade">
+        <a href="#contact" class="btn btn-ghost">Reserve Your Visit</a>
+        <p>Every review reflects a completed, in-house appointment.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CONTACT ============ -->
   <section id="contact">
     <div class="container">
@@ -632,6 +1033,7 @@
         <a href="#spa">The Spa</a>
         <a href="#salon">The Beauty Salon</a>
         <a href="#shop">Cosmetics Shop</a>
+        <a href="#reviews">Reviews</a>
         <a href="#contact">Contact</a>
       </nav>
     </div>
@@ -687,6 +1089,28 @@
   } else {
     revealEls.forEach(function(el){ el.classList.add('is-visible'); });
   }
+
+  /* ---------------- Reviews rail: mouse-drag scroll (desktop) ---------------- */
+  document.querySelectorAll('.reviews-track').forEach(function(track){
+    var isDown = false, startX, scrollLeft;
+    track.addEventListener('mousedown', function(e){
+      isDown = true;
+      track.style.cursor = 'grabbing';
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    });
+    ['mouseleave','mouseup'].forEach(function(evt){
+      track.addEventListener(evt, function(){ isDown = false; track.style.cursor = 'grab'; });
+    });
+    track.addEventListener('mousemove', function(e){
+      if(!isDown) return;
+      e.preventDefault();
+      var x = e.pageX - track.offsetLeft;
+      var walk = (x - startX) * 1.2;
+      track.scrollLeft = scrollLeft - walk;
+    });
+    track.style.cursor = 'grab';
+  });
 
   /* ---------------- Three.js cinematic scene ---------------- */
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
